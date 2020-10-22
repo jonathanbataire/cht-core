@@ -21,6 +21,7 @@ export const Actions = {
   setSelectMode: createSingleValueAction('SET_SELECT_MODE', 'selectMode'),
   setIsAdmin: createSingleValueAction('SET_IS_ADMIN', 'isAdmin'),
   setTitle: createSingleValueAction('SET_TITLE', 'title'),
+  setEnketoStatus: createSingleValueAction('SET_ENKETO_STATUS', 'enketoStatus'),
 
   clearSelected: createAction('CLEAR_SELECTED'),
   setCancelCallback: createSingleValueAction('SET_CANCEL_CALLBACK', 'cancelCallback'),
@@ -123,7 +124,7 @@ export class GlobalActions {
     this.clearSelected();
   }
 
-  setCancelCallbackAction(value) {
+  setCancelCallback(value) {
     return this.store.dispatch(Actions.setCancelCallback(value));
   }
 
@@ -149,6 +150,18 @@ export class GlobalActions {
 
   setLeftActionBar(value) {
     return this.store.dispatch(Actions.setLeftActionBar(value));
+  }
+
+  setEnketoError(error) {
+    return this.store.dispatch(Actions.setEnketoStatus({ error }));
+  }
+
+  setEnketoEditedStatus(edited) {
+    return this.store.dispatch(Actions.setEnketoStatus({ edited }));
+  }
+
+  setEnketoSavingStatus(saving) {
+    return this.store.dispatch(Actions.setEnketoStatus({ saving }));
   }
 }
 
@@ -184,31 +197,10 @@ angular.module('inboxServices').factory('GlobalActions',
         dispatch(ActionUtils.createSingleValueAction(actionTypes.SET_ACTION_BAR_RIGHT_VERIFIED, 'verified', value));
       }
 
-      function createSetEnketoStatusAction(value) {
-        return ActionUtils.createSingleValueAction(actionTypes.SET_ENKETO_STATUS, 'enketoStatus', value);
-      }
-
-      function setEnketoError(error) {
-        dispatch(createSetEnketoStatusAction({ error }));
-      }
-
-      function setEnketoEditedStatus(edited) {
-        dispatch(createSetEnketoStatusAction({ edited }));
-      }
-
-      function setEnketoSavingStatus(saving) {
-        dispatch(createSetEnketoStatusAction({ saving }));
-      }
-
       function setLoadingSubActionBar(loading) {
         dispatch(ActionUtils.createSingleValueAction(
           actionTypes.SET_LOADING_SUB_ACTION_BAR, 'loadingSubActionBar', loading
         ));
-      }
-
-
-      function setTitle(title) {
-        dispatch(ActionUtils.createSingleValueAction(actionTypes.SET_TITLE, 'title', title));
       }
 
       function setUnreadCount(unreadCount) {
@@ -217,30 +209,6 @@ angular.module('inboxServices').factory('GlobalActions',
 
       function updateUnreadCount(unreadCount) {
         dispatch(ActionUtils.createSingleValueAction(actionTypes.UPDATE_UNREAD_COUNT, 'unreadCount', unreadCount));
-      }
-
-
-      function setLoadingShowContent(id) {
-        setLoadingContent(id);
-        setShowContent(true);
-      }
-
-
-
-      /!**
-       * Unset the selected item
-       *!/
-      function unsetSelected() {
-        setShowContent(false);
-        setLoadingContent(false);
-        setShowActionBar(false);
-        setTitle();
-        dispatch({ type: actionTypes.CLEAR_SELECTED });
-        LiveList['contacts'].clearSelected();
-        LiveList['contact-search'].clearSelected();
-        LiveList['reports'].clearSelected();
-        LiveList['report-search'].clearSelected();
-        $('#reports-list input[type="checkbox"]').prop('checked', false);
       }
 
       // User wants to cancel current flow, or pressed back button, etc.

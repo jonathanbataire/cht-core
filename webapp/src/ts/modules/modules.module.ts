@@ -8,12 +8,13 @@ import { FormsModule } from '@angular/forms';
 import  { PipesModule } from '@mm-pipes/pipes.module';
 
 import { AboutComponent } from './about/about.component';
-import {ConfigurationUserComponent} from './configuration-user/configuration-user.component';
+import { ConfigurationUserComponent } from './configuration-user/configuration-user.component';
 import { ErrorComponent } from './error/error.component';
 import { AnalyticsComponent } from './analytics/analytics.component';
 import { ReportsComponent } from './reports/reports.component';
 import { ReportsContentComponent } from './reports/reports-content.component';
 import { ReportsFiltersComponent } from '@mm-modules/reports/reports-filters.component';
+import { ReportsAddComponent } from '@mm-modules/reports/reports-add.component';
 import { ComponentsModule } from '../components/components.module';
 import { MessagesComponent } from './messages/messages.component';
 import { MessagesContentComponent } from './messages/messages-content.component';
@@ -26,6 +27,7 @@ import { MessagesContentComponent } from './messages/messages-content.component'
     AnalyticsComponent,
     ReportsComponent,
     ReportsContentComponent,
+    ReportsAddComponent,
     MessagesComponent,
     ReportsFiltersComponent,
     MessagesContentComponent,
@@ -45,7 +47,6 @@ import { MessagesContentComponent } from './messages/messages-content.component'
     ErrorComponent,
     AnalyticsComponent,
     ReportsComponent,
-    ReportsContentComponent,
     MessagesComponent,
   ]
 })

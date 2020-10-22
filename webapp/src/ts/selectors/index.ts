@@ -1,9 +1,11 @@
 import { createSelector } from '@ngrx/store';
+import { create } from 'lodash-es';
 
 const getGlobalState = (state) => state.global || {};
 const getServicesState = (state) => state.services || {};
 const getReportsState = (state) => state.reports || {};
 const getMessagesState = (state) => state.messages || {};
+const getEnketoStatus = state => getGlobalState(state).enketoStatus;
 
 export const Selectors = {
   // global
@@ -23,6 +25,12 @@ export const Selectors = {
   getIsAdmin: createSelector(getGlobalState, (globalState) => globalState.isAdmin),
   getCancelCallback: createSelector(getGlobalState, (globalState) => globalState.cancelCallback),
   getTitle: createSelector(getGlobalState, (globalState) => globalState.title),
+
+  //enketo
+  getEnketoStatus: createSelector(getEnketoStatus, (enketoStatus) => enketoStatus),
+  getEnketoEditedStatus: createSelector(getEnketoStatus, (enketoStatus) => enketoStatus.edited),
+  getEnketoSavingStatus: createSelector(getEnketoStatus, (enketoStatus) => enketoStatus.saving),
+  getEnketoError: createSelector(getEnketoStatus, (enketoStatus) => enketoStatus.error),
 
   // services
   getLastChangedDoc: createSelector(getServicesState, (servicesState) => servicesState.lastChangedDoc),
@@ -59,10 +67,6 @@ export const Selectors = {
 
 // Global
 const getActionBar = state => getGlobalState(state).actionBar;
-const getEnketoStatus = state => getGlobalState(state).enketoStatus;
-const getEnketoEditedStatus = state => getGlobalState(state).enketoStatus.edited;
-const getEnketoSavingStatus = state => getGlobalState(state).enketoStatus.saving;
-const getEnketoError = state => getGlobalState(state).enketoStatus.error;
 
 const getLoadingSubActionBar = state => getGlobalState(state).loadingSubActionBar;
 
@@ -118,10 +122,7 @@ angular.module('inboxServices').constant('Selectors', {
   getGlobalState,
   getActionBar,
   getAndroidAppVersion,
-  getEnketoStatus,
-  getEnketoEditedStatus,
-  getEnketoSavingStatus,
-  getEnketoError,
+
   getLoadingSubActionBar,
   getShowActionBar,
   getUnreadCount,

@@ -381,7 +381,7 @@ export class AppComponent {
       console.debug('Delaying update');
       setTimeout(() => {
         this.showUpdateReady();
-      }, 5000);
+      }, TWO_HOURS);
     });
     //closeDropdowns();
   };

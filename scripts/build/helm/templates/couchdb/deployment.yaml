@@ -14,6 +14,7 @@ spec:
       cht.service: couchdb
   strategy:
     type: Recreate
+    rollingUpdate: null
   template:
     metadata:
       labels:
@@ -93,6 +94,7 @@ spec:
       cht.service: couchdb-{{ $nodeNumber }}
   strategy:
     type: Recreate
+    rollingUpdate: null
   template:
     metadata:
       labels:

@@ -77,6 +77,20 @@
 {{- end }}
 {{- end }}
 
+{{- /* K3s local volume validations */ -}}
+{{- if and (eq .Values.cluster_type "k3s-k3d") (eq (toString .Values.couchdb_data.preExistingDataAvailable) "true") (eq (toString (dig "volumeType" "" (.Values.local_storage | default dict))) "local") }}
+{{- if .Values.couchdb.clusteredCouchEnabled }}
+{{- range $i, $e := until (int .Values.clusteredCouch.noOfCouchDBNodes) }}
+{{- $nodeNumber := add $i 1 }}
+{{- if not (index ($.Values.nodes | default dict) (printf "node-%d" $nodeNumber)) }}
+{{- fail (printf "nodes.node-%d is required when local_storage.volumeType is local. Please set it in your values file." $nodeNumber) }}
+{{- end }}
+{{- end }}
+{{- else if not (dig "single_node_deploy" "" (.Values.nodes | default dict)) }}
+{{- fail "nodes.single_node_deploy is required when local_storage.volumeType is local. Please set it in your values file." }}
+{{- end }}
+{{- end }}
+
 {{- /* K3s vSphere validations */ -}}
 {{- if eq .Values.cluster_type "k3s-k3d" }}
 {{- if eq (toString .Values.k3s_use_vSphere_storage_class) "true" }}

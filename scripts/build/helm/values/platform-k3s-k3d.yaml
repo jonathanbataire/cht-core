@@ -20,6 +20,10 @@ local_storage:  # OPTIONAL: Only needed if using k3s-k3d and have pre-existing d
   preExistingDiskPath-1: "/var/lib/couchdb1" # DEFAULT: Good default path. If node1 has pre-existing data.
   preExistingDiskPath-2: "/var/lib/couchdb2" # DEFAULT: Good default path. If node2 has pre-existing data.
   preExistingDiskPath-3: "/var/lib/couchdb3" # DEFAULT: Good default path. If node3 has pre-existing data.
+  # Set volumeType to "local" to adopt volumes created by the legacy cht-chart-4x chart
+  # (local volumes pinned to nodes.node-N / nodes.single_node_deploy, storage class "local-storage").
+  volumeType: "hostPath" # DEFAULT: Good default. Either "hostPath" or "local".
+  storageClass: "local-path" # DEFAULT: Good default. Use "local-storage" when migrating from cht-chart-4x.
 
 ingress:
   host: "localhost" # DEFAULT: Good default for k3s-k3d local development

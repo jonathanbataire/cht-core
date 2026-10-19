@@ -35,10 +35,23 @@ spec:
     volumeAttributes:
       partition: "{{ .partition | default "0" }}"
 {{- else if eq $platform "k3s-k3d" }}
-  storageClassName: local-path
+  storageClassName: {{ .storageClass | default "local-path" }}
+{{- if eq (toString .volumeType) "local" }}
+  local:
+    path: {{ .diskPath }}
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - {{ .nodeName }}
+{{- else }}
   hostPath:
     path: {{ .diskPath }}
     type: DirectoryOrCreate
+{{- end }}
 {{- end }}
 {{- end -}}
 
@@ -99,7 +112,11 @@ ports:
 {{- define "couchdb.pvcStorageClass" -}}
 {{- if .couchdb_data.preExistingDataAvailable }}
 volumeName: couchdb-pv-{{ .namespace }}{{ if .nodeNumber }}-{{ .nodeNumber }}{{ end }}
+{{- if eq (toString .cluster_type) "k3s-k3d" }}
+storageClassName: {{ (.local_storage | default dict).storageClass | default "local-path" }}
+{{- else }}
 storageClassName: ""
+{{- end }}
 {{- else }}
 {{- if eq (toString .cluster_type) "eks" }}
 storageClassName: {{ .couchdb.storage_class | default "ebs-gp2" }}  # Fallback for backward compatibility
